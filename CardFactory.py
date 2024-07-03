@@ -3,9 +3,12 @@ import random
 
 class CardFactory:
 
-    def createCard(self, val):
+    def create_card(self, val):
         return Card(val)
     
-    def createRandomCard(self):
+    def create_random_card(self):
         val = random.randint(1,3)
-        return self.createCard(val)
+        return self.create_card(val)
+    
+    def create_null_card(self):
+        return self.create_card(0)
