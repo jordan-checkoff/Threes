@@ -1,29 +1,26 @@
-from Board import Board
-from Card import Card
+from BoardFactory import BoardFactory
 
 class Game:
 
     def __init__(self):
-        self.board = Board([[Card(2), Card(3), None, None],
-                    [None, None, Card(1), Card(1)],
-                    [Card(1), None, Card(3), None],
-                    [Card(2), Card(1), None, Card(2)]])
-        
+        self.board_factory = BoardFactory()
     
     def play(self):
+        board = self.board_factory.create_test_board()
+
         while True:
-            print(self.board)
+            print(board)
 
             dir = input()
 
             if dir == "w":
-                self.board.shift_up()
+                board.shift_up()
 
             if dir == "s":
-                self.board.shift_down()
+                board.shift_down()
 
             if dir == "a":
-                self.board.shift_left()
+                board.shift_left()
 
             if dir == "d":
-                self.board.shift_right()
+                board.shift_right()
