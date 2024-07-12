@@ -14,6 +14,11 @@ class Game:
         turn = 0
 
         while not board.is_full():
+            next_card = self.card_factory.create_random_card(turn)
+
+            print("\n")
+            print(next_card)
+            print("")
             print(board)
 
             dir = input()
@@ -21,7 +26,6 @@ class Game:
             if dir == "w":
                 options = board.shift_up()
                 if options:
-                    next_card = self.card_factory.create_random_card(turn)
                     spot = self.pick_spot(options)
                     board.set_card(3, spot, next_card)
                     turn += 1
@@ -29,7 +33,6 @@ class Game:
             if dir == "s":
                 options = board.shift_down()
                 if options:
-                    next_card = self.card_factory.create_random_card(turn)
                     spot = self.pick_spot(options)
                     board.set_card(0, spot, next_card)
                     turn += 1
@@ -37,7 +40,6 @@ class Game:
             if dir == "a":
                 options = board.shift_left()
                 if options:
-                    next_card = self.card_factory.create_random_card(turn)
                     spot = self.pick_spot(options)
                     board.set_card(spot, 3, next_card)
                     turn += 1
@@ -45,7 +47,6 @@ class Game:
             if dir == "d":
                 options = board.shift_right()
                 if options:
-                    next_card = self.card_factory.create_random_card(turn)
                     spot = self.pick_spot(options)
                     board.set_card(spot, 0, next_card)
                     turn += 1
