@@ -9,6 +9,6 @@ class CardFactory:
         else:
             return None
     
-    def create_random_card(self):
+    def create_random_card(self, turn):
         val = random.randint(1,3)
         return self.create_card(val)
