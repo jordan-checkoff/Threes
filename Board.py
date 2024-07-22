@@ -17,6 +17,20 @@ class Board:
     def set_card(self, i, j, card):
         self.grid[i][j] = card
 
+    def remove_card(self, i, j):
+        self.grid[i][j] = None
+
+    def move_card(self, i, j, x, y):
+        card = self.get_card(x, y)
+        self.set_card(i, j, card)
+        self.remove_card(x, y)
+
+    def combine_cards(self, i, j, x, y):
+        curr = self.get_card(i, j)
+        neighbor = self.get_card(x, y)
+        curr.combine(neighbor)
+        self.remove_card(x, y)
+
 
 
     def can_shift(self, i, j, x, y):
@@ -28,6 +42,17 @@ class Board:
         if curr and curr.can_combine(neighbor):
             return True
         return False
+    
+    def shift(self, i, j, x, y):
+        curr = self.get_card(i, j)
+        neighbor = self.get_card(x, y)
+
+        if not curr and neighbor:
+            self.move_card(i, j, x, y)
+        if curr and curr.can_combine(neighbor):
+            self.combine_cards(i, j, x, y)
+
+
 
     def can_shift_left(self):
         for i in range(4):
@@ -56,89 +81,36 @@ class Board:
                 if self.can_shift(i, j, i-1, j):
                     return True
         return False
-    
+       
 
  
     def shift_left(self):
         options = []
         for i in range(4):
             for j in range(3):
-                if not self.grid[i][j] and self.grid[i][j+1]:
-                    self.shift_row_left(i, j)
-                    options.append(i)
-                    break
-                elif self.grid[i][j+1] and self.grid[i][j].can_combine(self.grid[i][j+1]):
-                    self.grid[i][j].combine(self.grid[i][j+1])
-                    self.shift_row_left(i, j+1)
-                    options.append(i)
-                    break
+                self.shift(i, j, i, j+1)
         return options
 
     def shift_right(self):
         options = []
         for i in range(4):
             for j in range(3, 0, -1):
-                if not self.grid[i][j] and self.grid[i][j-1]:
-                    self.shift_row_right(i, j)
-                    options.append(i)
-                    break
-                elif self.grid[i][j-1] and self.grid[i][j].can_combine(self.grid[i][j-1]):
-                    self.grid[i][j].combine(self.grid[i][j-1])
-                    self.shift_row_right(i, j-1)
-                    options.append(i)
-                    break
+                self.shift(i, j, i, j-1)
         return options
-
+    
     def shift_up(self):
         options = []
         for j in range(4):
             for i in range(3):
-                if not self.grid[i][j] and self.grid[i+1][j]:
-                    self.shift_col_up(i, j)
-                    options.append(j)
-                    break
-                elif self.grid[i+1][j] and self.grid[i][j].can_combine(self.grid[i+1][j]):
-                    self.grid[i][j].combine(self.grid[i+1][j])
-                    self.shift_col_up(i+1, j)
-                    options.append(j)
-                    break
+                self.shift(i, j, i+1, j)
         return options
-
+    
     def shift_down(self):
         options = []
         for j in range(4):
             for i in range(3, 0, -1):
-                if not self.grid[i][j] and self.grid[i-1][j]:
-                    self.shift_col_down(i, j)
-                    options.append(j)
-                    break
-                elif self.grid[i-1][j] and self.grid[i][j].can_combine(self.grid[i-1][j]):
-                    self.grid[i][j].combine(self.grid[i-1][j])
-                    self.shift_col_down(i-1, j)
-                    options.append(j)
-                    break
+                self.shift(i, j, i-1, j)
         return options
-
-
-    def shift_row_left(self, i, j):
-        for col in range(j, 3):
-            self.grid[i][col] = self.grid[i][col+1]
-        self.grid[i][3] = None
-
-    def shift_row_right(self, i, j):
-        for col in range(j, 0, -1):
-            self.grid[i][col] = self.grid[i][col-1]
-        self.grid[i][0] = None
-
-    def shift_col_up(self, i, j):
-        for row in range(i, 3):
-            self.grid[row][j] = self.grid[row+1][j]
-        self.grid[3][j] = None
-
-    def shift_col_down(self, i, j):
-        for row in range(i, 0, -1):
-            self.grid[row][j] = self.grid[row-1][j]
-        self.grid[0][j] = None
 
 
     def __str__(self):

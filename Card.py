@@ -20,7 +20,6 @@ class Card:
     def combine(self, card):
         if card:
             self.value += card.value
-            del card
 
     def pad_value(self):
         str_val = str(self.value)
