@@ -49,8 +49,10 @@ class Board:
 
         if not curr and neighbor:
             self.move_card(i, j, x, y)
+            return True
         if curr and curr.can_combine(neighbor):
             self.combine_cards(i, j, x, y)
+            return True
 
 
 
@@ -85,31 +87,35 @@ class Board:
 
  
     def shift_left(self):
-        options = []
+        options = set()
         for i in range(4):
             for j in range(3):
-                self.shift(i, j, i, j+1)
+                if self.shift(i, j, i, j+1):
+                    options.add(i)
         return options
 
     def shift_right(self):
-        options = []
+        options = set()
         for i in range(4):
             for j in range(3, 0, -1):
-                self.shift(i, j, i, j-1)
+                if self.shift(i, j, i, j-1):
+                    options.add(i)
         return options
     
     def shift_up(self):
-        options = []
+        options = set()
         for j in range(4):
             for i in range(3):
-                self.shift(i, j, i+1, j)
+                if self.shift(i, j, i+1, j):
+                    options.add(j)
         return options
     
     def shift_down(self):
-        options = []
+        options = set()
         for j in range(4):
             for i in range(3, 0, -1):
-                self.shift(i, j, i-1, j)
+                if self.shift(i, j, i-1, j):
+                    options.add(j)
         return options
 
 

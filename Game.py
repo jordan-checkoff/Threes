@@ -7,51 +7,59 @@ class Game:
     def __init__(self):
         self.card_factory = CardFactory()
         self.board_factory = BoardFactory()
+
+        self.turn = 0
+
         self.board = self.board_factory.create_test_board()
+        self.next_card = self.card_factory.create_random_card(self.turn)
     
     def play(self):
 
-        turn = 0
-
         while not self.is_game_over():
-            next_card = self.card_factory.create_random_card(turn)
 
             print("\n")
-            print(next_card)
+            print(self.next_card)
             print("")
             print(self.board)
 
             dir = input()
 
             if dir == "w":
-                options = self.board.shift_up()
-                if options:
-                    spot = self.pick_spot(options)
-                    self.board.set_card(3, spot, next_card)
-                    turn += 1
+                f = self.board.shift_up
+                g = lambda x: self.board.set_card(3, x, self.next_card)
+                self.attempt_move(f, g)
 
-            if dir == "s":
-                options = self.board.shift_down()
-                if options:
-                    spot = self.pick_spot(options)
-                    self.board.set_card(0, spot, next_card)
-                    turn += 1
+            elif dir == "s":
+                f = self.board.shift_down
+                g = lambda x: self.board.set_card(0, x, self.next_card)
+                self.attempt_move(f, g)
 
-            if dir == "a":
-                options = self.board.shift_left()
-                if options:
-                    spot = self.pick_spot(options)
-                    self.board.set_card(spot, 3, next_card)
-                    turn += 1
+            elif dir == "a":
+                f = self.board.shift_left
+                g = lambda x: self.board.set_card(x, 3, self.next_card)
+                self.attempt_move(f, g)
 
-            if dir == "d":
-                options = self.board.shift_right()
-                if options:
-                    spot = self.pick_spot(options)
-                    self.board.set_card(spot, 0, next_card)
-                    turn += 1
+            elif dir == "d":
+                f = self.board.shift_right
+                g = lambda x: self.board.set_card(x, 0, self.next_card)
+                self.attempt_move(f, g)
+
+            else:
+                print("Move must be WASD")
 
         print("GAME OVER")
+        print(self.board)
+
+
+    def attempt_move(self, f, g):
+        options = f()
+        if options:
+            spot = self.pick_spot(options)
+            g(spot)
+            self.turn += 1
+            self.next_card = self.card_factory.create_random_card(self.turn)
+        else:
+            print("Invalid move")
 
 
     def is_game_over(self):
@@ -65,4 +73,4 @@ class Game:
 
 
     def pick_spot(self, options):
-        return random.choice(options)
+        return random.choice(list(options))
