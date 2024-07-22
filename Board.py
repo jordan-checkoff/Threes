@@ -114,15 +114,17 @@ class Board:
 
 
     def __str__(self):
-        horizontal = "-" * (CARD_WIDTH*3 + 4) + "\n"
-        vertical = ("|" + (" " * CARD_WIDTH)) * 3 + "|\n"
+        horizontal = "-" * (CARD_WIDTH*4 + 5) + "\n"
+        vertical = ("|" + (" " * CARD_WIDTH)) * 4 + "|\n"
 
         output = horizontal + vertical
-        output += f"|{self.get_padded(0, 0)}|{self.get_padded(0, 1)}|{self.get_padded(0, 2)}|\n"
+        output += f"|{self.get_padded(0, 0)}|{self.get_padded(0, 1)}|{self.get_padded(0, 2)}|{self.get_padded(0, 3)}|\n"
         output += vertical + horizontal + vertical
-        output += f"|{self.get_padded(1, 0)}|{self.get_padded(1, 1)}|{self.get_padded(1, 2)}|\n"
+        output += f"|{self.get_padded(1, 0)}|{self.get_padded(1, 1)}|{self.get_padded(1, 2)}|{self.get_padded(1, 3)}|\n"
         output += vertical + horizontal + vertical
-        output += f"|{self.get_padded(2, 0)}|{self.get_padded(2, 1)}|{self.get_padded(2, 2)}|\n"
+        output += f"|{self.get_padded(2, 0)}|{self.get_padded(2, 1)}|{self.get_padded(2, 2)}|{self.get_padded(2, 3)}|\n"
+        output += vertical + horizontal + vertical
+        output += f"|{self.get_padded(3, 0)}|{self.get_padded(3, 1)}|{self.get_padded(3, 2)}|{self.get_padded(3, 3)}|\n"
         output += vertical + horizontal
 
         return output
