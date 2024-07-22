@@ -1,15 +1,63 @@
+from Card import CARD_WIDTH
 
 class Board:
 
     def __init__(self, grid):
         self.grid = grid
 
-    def is_full(self):
+    def has_card(self, i, j):
+        return True if self.grid[i][j] else False
+
+    def get_card(self, i, j):
+        return self.grid[i][j]
+    
+    def get_value(self, i, j):
+        return self.get_card(i, j).value if self.has_card(i, j) else None
+    
+    def set_card(self, i, j, card):
+        self.grid[i][j] = card
+
+
+
+    def can_shift(self, i, j, x, y):
+        curr = self.get_card(i, j)
+        neighbor = self.get_card(x, y)
+
+        if not curr and neighbor:
+            return True
+        if curr and curr.can_combine(neighbor):
+            return True
+        return False
+
+    def can_shift_left(self):
         for i in range(4):
-            for j in range(4):
-                if not self.get_value(i, j):
-                    return False
-        return True
+            for j in range(3):
+                if self.can_shift(i, j, i, j+1):
+                    return True
+        return False
+    
+    def can_shift_right(self):
+        for i in range(4):
+            for j in range(3, 0, -1):
+                if self.can_shift(i, j, i, j-1):
+                    return True
+        return False
+    
+    def can_shift_up(self):
+        for j in range(4):
+            for i in range(3):
+                if self.can_shift(i, j, i+1, j):
+                    return True
+        return False
+    
+    def can_shift_down(self):
+        for j in range(4):
+            for i in range(3, 0, -1):
+                if self.can_shift(i, j, i-1, j):
+                    return True
+        return False
+    
+
  
     def shift_left(self):
         options = []
@@ -93,24 +141,23 @@ class Board:
         self.grid[0][j] = None
 
 
-    def set_card(self, i, j, card):
-        self.grid[i][j] = card
-
-
-    def get_value(self, i, j):
-        return self.grid[i][j].value if self.grid[i][j] else None
-
-
     def __str__(self):
-        output = ""
+        horizontal = "-" * (CARD_WIDTH*3 + 4) + "\n"
+        vertical = ("|" + (" " * CARD_WIDTH)) * 3 + "|\n"
 
-        for i in range(4):
-            for j in range(4):
-                if self.grid[i][j]:
-                    val = self.get_value(i, j)
-                    output += str(val) + " "
-                else:
-                    output += "  "
-            output += "\n"
+        output = horizontal + vertical
+        output += f"|{self.get_padded(0, 0)}|{self.get_padded(0, 1)}|{self.get_padded(0, 2)}|\n"
+        output += vertical + horizontal + vertical
+        output += f"|{self.get_padded(1, 0)}|{self.get_padded(1, 1)}|{self.get_padded(1, 2)}|\n"
+        output += vertical + horizontal + vertical
+        output += f"|{self.get_padded(2, 0)}|{self.get_padded(2, 1)}|{self.get_padded(2, 2)}|\n"
+        output += vertical + horizontal
 
         return output
+    
+
+    def get_padded(self, i, j):
+        if self.grid[i][j]:
+            return self.grid[i][j].pad_value()
+        else:
+            return " " * CARD_WIDTH
