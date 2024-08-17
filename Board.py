@@ -33,6 +33,17 @@ class Board:
 
 
 
+    def is_unshiftable(self):
+        if not (self.can_shift_down() or
+                self.can_shift_up() or
+                self.can_shift_left() or
+                self.can_shift_right()):
+            return True
+        else:
+            return False
+
+
+
     def can_shift(self, i, j, x, y):
         curr = self.get_card(i, j)
         neighbor = self.get_card(x, y)

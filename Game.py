@@ -15,7 +15,7 @@ class Game:
     
     def play(self, decider, p=False):
 
-        while not self.is_game_over():
+        while not self.board.is_unshiftable():
 
             if p:
                 print("\n")
@@ -64,16 +64,6 @@ class Game:
             g(spot)
             self.turn += 1
             self.next_card = self.card_factory.create_random_card(self.turn)
-            return True
-        else:
-            return False
-
-
-    def is_game_over(self):
-        if not (self.board.can_shift_down() or
-                self.board.can_shift_up() or
-                self.board.can_shift_left() or
-                self.board.can_shift_right()):
             return True
         else:
             return False
