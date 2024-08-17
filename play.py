@@ -3,7 +3,7 @@ from Game import Game
 
 def start_game():
     game = Game()
-    game.play(decider)
+    game.play(decider, True)
 
 
 def decider(board, next_card):

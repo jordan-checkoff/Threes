@@ -13,41 +13,47 @@ class Game:
         self.board = self.board_factory.create_test_board()
         self.next_card = self.card_factory.create_random_card(self.turn)
     
-    def play(self, decider):
+    def play(self, decider, p=False):
 
         while not self.is_game_over():
 
-            print("\n")
-            print(self.next_card)
-            print("")
-            print(self.board)
+            if p:
+                print("\n")
+                print(self.next_card)
+                print("")
+                print(self.board)
 
             dir = decider(self.board, self.next_card)
 
             if dir == "w":
                 f = self.board.shift_up
                 g = lambda x: self.board.set_card(3, x, self.next_card)
-                self.attempt_move(f, g)
+                if not self.attempt_move(f, g) and p:
+                    print("Invalid move")
 
             elif dir == "s":
                 f = self.board.shift_down
                 g = lambda x: self.board.set_card(0, x, self.next_card)
-                self.attempt_move(f, g)
+                if not self.attempt_move(f, g) and p:
+                    print("Invalid move")
 
             elif dir == "a":
                 f = self.board.shift_left
                 g = lambda x: self.board.set_card(x, 3, self.next_card)
-                self.attempt_move(f, g)
+                if not self.attempt_move(f, g) and p:
+                    print("Invalid move")
 
             elif dir == "d":
                 f = self.board.shift_right
                 g = lambda x: self.board.set_card(x, 0, self.next_card)
-                self.attempt_move(f, g)
+                if not self.attempt_move(f, g) and p:
+                    print("Invalid move")
 
             else:
                 print("Move must be WASD")
 
         print("GAME OVER")
+        print(f"Turns: {self.turn}")
         print(self.board)
 
 
@@ -58,8 +64,9 @@ class Game:
             g(spot)
             self.turn += 1
             self.next_card = self.card_factory.create_random_card(self.turn)
+            return True
         else:
-            print("Invalid move")
+            return False
 
 
     def is_game_over(self):
