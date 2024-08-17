@@ -13,7 +13,7 @@ class Game:
         self.board = self.board_factory.create_test_board()
         self.next_card = self.card_factory.create_random_card(self.turn)
     
-    def play(self):
+    def play(self, decider):
 
         while not self.is_game_over():
 
@@ -22,7 +22,7 @@ class Game:
             print("")
             print(self.board)
 
-            dir = input()
+            dir = decider(self.board, self.next_card)
 
             if dir == "w":
                 f = self.board.shift_up
