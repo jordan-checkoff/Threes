@@ -9,15 +9,9 @@ class Threes:
         self.board = board
         self.get_next_card()
     
-    def play(self, decider, p=False):
+    def play(self, decider):
 
         while self.board.can_shift():
-
-            if p:
-                print("\n")
-                print(self.next_card)
-                print("")
-                print(self.board)
 
             dir = decider.choose_move(self.board, self.next_card)
 
@@ -31,16 +25,12 @@ class Threes:
                 coordinates = self.board.shift_left()
             elif dir == Moves.RIGHT:
                 coordinates = self.board.shift_right()
-            else:
-                print("Move must be WASD")
 
             if coordinates:
                 choice = random.choice(list(coordinates))
                 self.board.add_tile(self.next_card, choice[0], choice[1])
                 self.turn += 1
                 self.get_next_card()
-            elif p:
-                print("Invalid move")
 
         print("GAME OVER")
         print(f"Turns: {self.turn}")

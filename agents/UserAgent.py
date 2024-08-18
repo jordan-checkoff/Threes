@@ -4,6 +4,10 @@ from game.Threes import Moves
 class UserAgent:
 
     def choose_move(self, board, next_card):
+        print(next_card)
+        print("")
+        print(board)
+
         while True:
             dir = input()
             if dir == "w":
