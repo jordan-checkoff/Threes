@@ -1,4 +1,4 @@
-from Game import Game
+from Game import Game, Moves
 from BoardFactory import BoardFactory
 
 
@@ -10,8 +10,18 @@ def start_game():
 
 
 def decider(board, next_card):
-    dir = input()
-    return dir
+    while True:
+        dir = input()
+        if dir == "w":
+            return Moves.UP
+        elif dir == "a":
+            return Moves.LEFT
+        elif dir == "s":
+            return Moves.DOWN
+        elif dir == "d":
+            return Moves.RIGHT
+        else:
+            print("input must be WASD")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,5 @@
 import random
+from enum import Enum
 
 class Game:
 
@@ -22,13 +23,13 @@ class Game:
 
             coordinates = None
 
-            if dir == "w":
+            if dir == Moves.UP:
                 coordinates = self.board.shift_up()
-            elif dir == "s":
+            elif dir == Moves.DOWN:
                 coordinates = self.board.shift_down()
-            elif dir == "a":
+            elif dir == Moves.LEFT:
                 coordinates = self.board.shift_left()
-            elif dir == "d":
+            elif dir == Moves.RIGHT:
                 coordinates = self.board.shift_right()
             else:
                 print("Move must be WASD")
@@ -52,3 +53,12 @@ class Game:
 
     def pick_spot(self, options):
         return random.choice(list(options))
+    
+
+
+
+class Moves(Enum):
+    UP = 1
+    RIGHT = 2
+    DOWN = 3
+    LEFT = 4
