@@ -1,21 +1,16 @@
-from BoardFactory import BoardFactory
-from CardFactory import CardFactory
 import random
 
 class Game:
 
-    def __init__(self):
-        self.card_factory = CardFactory()
-        self.board_factory = BoardFactory()
+    def __init__(self, board):
 
         self.turn = 0
-
-        self.board = self.board_factory.create_test_board()
-        self.next_card = self.card_factory.create_random_card(self.turn)
+        self.board = board
+        self.get_next_card()
     
     def play(self, decider, p=False):
 
-        while not self.board.is_unshiftable():
+        while self.board.can_shift():
 
             if p:
                 print("\n")
@@ -25,49 +20,35 @@ class Game:
 
             dir = decider(self.board, self.next_card)
 
+            coordinates = None
+
             if dir == "w":
-                f = self.board.shift_up
-                g = lambda x: self.board.set_card(3, x, self.next_card)
-                if not self.attempt_move(f, g) and p:
-                    print("Invalid move")
-
+                coordinates = self.board.shift_up()
             elif dir == "s":
-                f = self.board.shift_down
-                g = lambda x: self.board.set_card(0, x, self.next_card)
-                if not self.attempt_move(f, g) and p:
-                    print("Invalid move")
-
+                coordinates = self.board.shift_down()
             elif dir == "a":
-                f = self.board.shift_left
-                g = lambda x: self.board.set_card(x, 3, self.next_card)
-                if not self.attempt_move(f, g) and p:
-                    print("Invalid move")
-
+                coordinates = self.board.shift_left()
             elif dir == "d":
-                f = self.board.shift_right
-                g = lambda x: self.board.set_card(x, 0, self.next_card)
-                if not self.attempt_move(f, g) and p:
-                    print("Invalid move")
-
+                coordinates = self.board.shift_right()
             else:
                 print("Move must be WASD")
+
+            if coordinates:
+                choice = random.choice(list(coordinates))
+                self.board.add_tile(self.next_card, choice[0], choice[1])
+                self.turn += 1
+                self.get_next_card()
+            elif p:
+                print("Invalid move")
 
         print("GAME OVER")
         print(f"Turns: {self.turn}")
         print(self.board)
 
 
-    def attempt_move(self, f, g):
-        options = f()
-        if options:
-            spot = self.pick_spot(options)
-            g(spot)
-            self.turn += 1
-            self.next_card = self.card_factory.create_random_card(self.turn)
-            return True
-        else:
-            return False
 
+    def get_next_card(self):
+        self.next_card = random.choice([1, 2, 3])
 
     def pick_spot(self, options):
         return random.choice(list(options))

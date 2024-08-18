@@ -1,154 +1,69 @@
-from Card import CARD_WIDTH
 
 class Board:
 
-    def __init__(self, grid):
-        self.grid = grid
-
-    def has_card(self, i, j):
-        return True if self.grid[i][j] else False
-
-    def get_card(self, i, j):
-        return self.grid[i][j]
-    
-    def get_value(self, i, j):
-        return self.get_card(i, j).value if self.has_card(i, j) else None
-    
-    def set_card(self, i, j, card):
-        self.grid[i][j] = card
-
-    def remove_card(self, i, j):
-        self.grid[i][j] = None
-
-    def move_card(self, i, j, x, y):
-        card = self.get_card(x, y)
-        self.set_card(i, j, card)
-        self.remove_card(x, y)
-
-    def combine_cards(self, i, j, x, y):
-        curr = self.get_card(i, j)
-        neighbor = self.get_card(x, y)
-        curr.combine(neighbor)
-        self.remove_card(x, y)
+    def __init__(self, board):
+        self.board = board
 
 
+    def add_tile(self, tile, x, y):
+        self.board[y][x] = tile
 
-    def is_unshiftable(self):
-        if not (self.can_shift_down() or
-                self.can_shift_up() or
-                self.can_shift_left() or
-                self.can_shift_right()):
-            return True
+    def get_tile(self, i, j):
+        return self.board[i][j]
+
+
+    def can_combine(self, val1, val2):
+        if val1 == 0:
+            return True if val2 != 0 else False
+        elif val1 == 1:
+            return True if val2 == 2 else False
+        elif val1 == 2:
+            return True if val2 == 1 else False
         else:
-            return False
+            return True if val1 == val2 else False
+        
 
 
-
-    def can_shift(self, i, j, x, y):
-        curr = self.get_card(i, j)
-        neighbor = self.get_card(x, y)
-
-        if not curr and neighbor:
-            return True
-        if curr and curr.can_combine(neighbor):
-            return True
-        return False
-    
-    def shift(self, i, j, x, y):
-        curr = self.get_card(i, j)
-        neighbor = self.get_card(x, y)
-
-        if not curr and neighbor:
-            self.move_card(i, j, x, y)
-            return True
-        if curr and curr.can_combine(neighbor):
-            self.combine_cards(i, j, x, y)
-            return True
-
-
-
-    def can_shift_left(self):
+    def can_shift(self):
         for i in range(4):
-            for j in range(3):
-                if self.can_shift(i, j, i, j+1):
+            for j in range(4):
+                if self.board[i][j] == 0:
                     return True
-        return False
-    
-    def can_shift_right(self):
-        for i in range(4):
-            for j in range(3, 0, -1):
-                if self.can_shift(i, j, i, j-1):
+                if i < 3 and self.can_combine(self.board[i][j], self.board[i+1][j]):
                     return True
-        return False
-    
-    def can_shift_up(self):
-        for j in range(4):
-            for i in range(3):
-                if self.can_shift(i, j, i+1, j):
+                if j < 3 and self.can_combine(self.board[i][j], self.board[i][j+1]):
                     return True
-        return False
-    
-    def can_shift_down(self):
-        for j in range(4):
-            for i in range(3, 0, -1):
-                if self.can_shift(i, j, i-1, j):
-                    return True
-        return False
-       
 
- 
+
+    def shift(self, x1, x2, x_dir, y1, y2, y_dir, dx, dy):
+        coordinates = set()
+
+        for i in range(y1, y2, y_dir):
+            for j in range(x1, x2, x_dir):
+                if self.can_combine(self.board[i+dy][j+dx], self.board[i][j]):
+                    self.board[i+dy][j+dx] += self.board[i][j]
+                    self.board[i][j] = 0
+                    if dx:
+                        coordinates.add((x2 + dx, i))
+                    else:
+                        coordinates.add((j, y2 + dy))
+
+        return coordinates
+
+    
     def shift_left(self):
-        options = set()
-        for i in range(4):
-            for j in range(3):
-                if self.shift(i, j, i, j+1):
-                    options.add(i)
-        return options
+        return self.shift(1, 4, 1, 0, 4, 1, -1, 0)
 
     def shift_right(self):
-        options = set()
-        for i in range(4):
-            for j in range(3, 0, -1):
-                if self.shift(i, j, i, j-1):
-                    options.add(i)
-        return options
-    
+        return self.shift(2, -1, -1, 0, 4, 1, 1, 0)
+
     def shift_up(self):
-        options = set()
-        for j in range(4):
-            for i in range(3):
-                if self.shift(i, j, i+1, j):
-                    options.add(j)
-        return options
-    
+        return self.shift(0, 4, 1, 1, 4, 1, 0, -1)
+
     def shift_down(self):
-        options = set()
-        for j in range(4):
-            for i in range(3, 0, -1):
-                if self.shift(i, j, i-1, j):
-                    options.add(j)
-        return options
+        return self.shift(0, 4, 1, 2, -1, -1, 0, 1)
 
 
     def __str__(self):
-        horizontal = "-" * (CARD_WIDTH*4 + 5) + "\n"
-        vertical = ("|" + (" " * CARD_WIDTH)) * 4 + "|\n"
-
-        output = horizontal + vertical
-        output += f"|{self.get_padded(0, 0)}|{self.get_padded(0, 1)}|{self.get_padded(0, 2)}|{self.get_padded(0, 3)}|\n"
-        output += vertical + horizontal + vertical
-        output += f"|{self.get_padded(1, 0)}|{self.get_padded(1, 1)}|{self.get_padded(1, 2)}|{self.get_padded(1, 3)}|\n"
-        output += vertical + horizontal + vertical
-        output += f"|{self.get_padded(2, 0)}|{self.get_padded(2, 1)}|{self.get_padded(2, 2)}|{self.get_padded(2, 3)}|\n"
-        output += vertical + horizontal + vertical
-        output += f"|{self.get_padded(3, 0)}|{self.get_padded(3, 1)}|{self.get_padded(3, 2)}|{self.get_padded(3, 3)}|\n"
-        output += vertical + horizontal
-
-        return output
-    
-
-    def get_padded(self, i, j):
-        if self.grid[i][j]:
-            return self.grid[i][j].pad_value()
-        else:
-            return " " * CARD_WIDTH
+        stringified = [[str(tile) for tile in row] for row in self.board]
+        return "\n".join(["\t".join(row) for row in stringified])

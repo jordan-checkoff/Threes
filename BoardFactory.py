@@ -1,22 +1,25 @@
 from Board import Board
-from CardFactory import CardFactory
-
 
 class BoardFactory:
 
-    def __init__(self):
-        self.card_factory = CardFactory()
-
     def create_board(self, board):
-        grid = [[self.card_factory.create_card(val) for val in row] for row in board]
-
-        return Board(grid)
+        return Board(board)
     
 
     def create_test_board(self):
-        grid = [[2, 3, None, None],
-                [None, None, 1, 1],
-                [1, None, 3, None],
-                [2, 1, None, 2]]
+        grid = [[2, 3, 0, 0],
+                [0, 0, 1, 1],
+                [1, 0, 3, 0],
+                [2, 1, 0, 2]]
         
+        return self.create_board(grid)
+    
+    def copy_board(self, board):
+        grid = []
+        for i in range(4):
+            row = []
+            for j in range(4):
+                row.append(board.get_tile(i, j))
+            grid.append(row)
+
         return self.create_board(grid)
