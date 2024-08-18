@@ -1,5 +1,5 @@
-from Game import Game, Moves
-from BoardFactory import BoardFactory
+from game.Threes import Game, Moves
+from game.BoardFactory import BoardFactory
 import random
 
 

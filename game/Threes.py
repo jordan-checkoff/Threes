@@ -1,7 +1,7 @@
 import random
 from enum import Enum
 
-class Game:
+class Threes:
 
     def __init__(self, board):
 
@@ -19,7 +19,7 @@ class Game:
                 print("")
                 print(self.board)
 
-            dir = decider(self.board, self.next_card)
+            dir = decider.choose_move(self.board, self.next_card)
 
             coordinates = None
 
