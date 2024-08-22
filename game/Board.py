@@ -2,7 +2,7 @@
 class Board:
 
     def __init__(self, board):
-        self.board = board
+        self.board = [row[:] for row in board]
 
 
     def add_tile(self, tile, x, y):
@@ -62,6 +62,10 @@ class Board:
 
     def shift_down(self):
         return self.shift(0, 4, 1, 2, -1, -1, 0, 1)
+    
+
+    def copy(self):
+        return Board(self.board)
 
 
     def __str__(self):

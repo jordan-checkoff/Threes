@@ -13,7 +13,7 @@ class Threes:
 
         while self.board.can_shift():
 
-            dir = decider.choose_move(self.board, self.next_card)
+            dir = decider.choose_move(self.board.copy(), self.next_card)
 
             coordinates = None
 
