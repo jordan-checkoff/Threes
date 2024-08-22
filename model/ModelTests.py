@@ -1,8 +1,8 @@
 import unittest
-from model.Model import Game
+from Model import Model
 
 
-class GameTests(unittest.TestCase):
+class ModelTests(unittest.TestCase):
 
     def test_init(self):
         board = [[1, 2, 3, 0],
@@ -10,7 +10,7 @@ class GameTests(unittest.TestCase):
                  [1, 3, 0, 2],
                  [1, 2, 3, 0]]
         
-        game = Game(board, 2)
+        game = Model(board, 2)
 
         self.assertListEqual(game.board.board, board)
         self.assertEqual(game.next_card, 2)
@@ -23,7 +23,7 @@ class GameTests(unittest.TestCase):
                  [1, 3, 0, 2],
                  [1, 2, 3, 0]]
         
-        game = Game(board, 2)
+        game = Model(board, 2)
 
 
         new_board = [[1, 1, 1, 1],

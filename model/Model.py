@@ -2,7 +2,7 @@ from Board import Board
 from Deck import Deck
 
 
-class Game:
+class Model:
 
     def __init__(self, board, next_card):
         self.board = Board(board)
