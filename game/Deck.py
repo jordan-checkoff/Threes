@@ -2,17 +2,14 @@ import random
 
 class Deck():
     
-    def __init__(self):
+    def __init__(self, next_card):
         self.reset()
+        self.remove_card(next_card)
 
     def reset(self):
         self.counts = [4, 4, 4]
 
-    def draw_card(self):
-        card = random.choices([1, 2, 3], self.counts)[0]
-        self.counts[card-1] -= 1
-
+    def remove_card(self, next_card):
+        self.counts[next_card - 1] -= 1
         if sum(self.counts) == 0:
             self.reset()
-
-        return card
