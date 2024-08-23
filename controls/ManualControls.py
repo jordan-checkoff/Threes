@@ -19,3 +19,6 @@ class ManualControls:
     def get_next_tile(self):
         tile = input("Enter next tile: ")
         return int(tile)
+    
+    def make_move(self, move):
+        print(move.name)
