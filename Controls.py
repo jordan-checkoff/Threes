@@ -13,6 +13,11 @@ class Controls():
         for tile in tiles:
             self.templates[tile] = cv2.imread(f'./{tile}.jpg', cv2.IMREAD_GRAYSCALE)
 
+        self.next_templates = {}
+        tiles = [1, 2, 3]
+        for tile in tiles:
+            self.next_templates[tile] = cv2.imread(f'./_{tile}.jpg', cv2.IMREAD_GRAYSCALE)
+
 
     def take_picture(self):
 
@@ -29,9 +34,12 @@ class Controls():
         board = self.identify_tiles(screenshot, board_segment)
 
         # Segment next tile
-
+        next_tile_segment = self.segment_next_tile(screenshot, sections["next_tile"])
 
         # Identify next tile
+
+        print(next_tile_segment)
+        print(board)
 
 
 
@@ -43,7 +51,7 @@ class Controls():
     def get_game_sections(self, screenshot):
         hsv = cv2.cvtColor(screenshot, cv2.COLOR_RGB2HSV)
         mask = cv2.inRange(hsv, np.array([20, 10, 150]), np.array([40, 30, 230]))
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((5, 5)))
+        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((7, 7)))
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
         segments = {}
@@ -53,7 +61,7 @@ class Controls():
             ratio = w / h
             if 0.74 < ratio < 0.76:
                 segments["board"] = (x, y, w, h)
-            elif 0.54 < ratio < 0.56:
+            elif 0.55 < ratio < 0.57:
                 segments["next_tile"] = (x, y, w, h)
 
         return segments
@@ -91,9 +99,9 @@ class Controls():
             row = []
             for j in range(4):
                 row.append(self.identify_tile(thresh, coords[i][j]))
-                # if i == 0 and j == 1:
+                # if i == 3 and j == 0:
                 #     x, w, y, h = coords[i][j]
-                #     cv2.imwrite("384.jpg", thresh[y:y+h, x:x+w])
+                #     cv2.imwrite("1.jpg", thresh[y:y+h, x:x+w])
             board.append(row)
         
         return board
@@ -112,6 +120,32 @@ class Controls():
                 val = num
 
         return val
+
+
+    def segment_next_tile(self, screenshot, coords):
+        x, y, w, h = coords
+        
+        x += round(0.22 * w)
+        y += round(0.43 * h)
+        w = round (0.58 * w)
+        h = round(0.44 * h)
+
+        gray = cv2.cvtColor(screenshot, cv2.COLOR_BGR2GRAY)
+
+        score = 0
+        val = None
+
+        for num, template in self.next_templates.items():
+            resized_template = cv2.resize(template, (w, h))
+            res = cv2.matchTemplate(gray[y:y+h, x:x+w], resized_template, cv2.TM_CCORR_NORMED)
+            if res > score:
+                score = res
+                val = num
+
+        return val
+
+        # cv2.imwrite("_2.jpg", screenshot[y:y+tile_height, x:x+tile_width])
+        # self.show_img(screenshot[y:y+tile_height, x:x+tile_width])
 
 
     def show_img(self, img):
