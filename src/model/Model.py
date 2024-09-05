@@ -15,6 +15,11 @@ class Model:
         self.next_tile = next_tile
         self.deck.remove_card(next_tile)
 
+    def copy(self):
+        copy = Model(self.board.copy(), self.next_tile)
+        copy.deck = self.deck.copy()
+        return copy
+
 class Moves(Enum):
     UP = 1
     RIGHT = 2

@@ -65,7 +65,7 @@ class Board:
     
 
     def copy(self):
-        return Board(self.board)
+        return self.board
 
 
     def __str__(self):

@@ -1,22 +1,24 @@
 from model.Model import Model
+import random
+from controller.UserInterface import UserInterface
+import agent.agent as agent
 
-class Game():
+  
+def play():
 
-    def __init__(self, controls, agent):
-        self.controls = controls
-        self.agent = agent
+    ui = UserInterface()
+    board, next = ui.get_state()
 
-    
-    def play(self):
-        board = self.controls.get_board()
-        next_tile = self.controls.get_next_tile()
+    model = Model(board, next)
 
-        model = Model(board, next_tile)
+    for i in range(20):
+        dir = agent.choose_move(model)
+        ui.change_state(dir)
 
-        while True:
-            decision = self.agent.choose_move(model)
-            self.controls.make_move(decision)
-            
-            board = self.controls.get_board()
-            next_tile = self.controls.get_next_tile()
-            model.update(board, next_tile)
+        board, next = ui.get_state()
+        model.update(board, next)
+        
+
+
+if __name__ == "__main__":
+    play()
