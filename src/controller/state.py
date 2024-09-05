@@ -20,7 +20,18 @@ def get_state():
 
 
 def change_state(dir):
-    pass
+    screenshot = screen.take_screenshot()
+    board_coords, next_coords = screen.segment_screen(screenshot)
+
+    if dir == 0:
+        screen.swipe_board(board_coords, 0, -100)
+    elif dir == 1:
+        screen.swipe_board(board_coords, 100, 0)
+    elif dir == 2:
+        screen.swipe_board(board_coords, 0, 100)
+    elif dir == 3:
+        screen.swipe_board(board_coords, -100, 0)
+
 
 
 
@@ -63,4 +74,4 @@ def get_board(coords, gray):
 
 
 if __name__ == "__main__":
-    get_state()
+    change_state(1)

@@ -22,8 +22,21 @@ def segment_screen(screenshot):
     return (board_coords, next_coords)
 
 
+def swipe_board(coords, dx, dy):
+    x, y, w, h = coords
+    x += w // 2
+    y += h // 2
+    pyautogui.moveTo(x//2, y//2)
+    pyautogui.click()
+    pyautogui.dragTo(x//2 + dx, y//2 + dy, 0.25, button="left")
 
 
+def show_img(screenshot, coords=None):
+    if coords:
+        x, y, w, h = coords
+        screenshot = screenshot[y:y+h, x:x+w]
+    cv2.imshow("Window", screenshot)
+    cv2.waitKey(0)
 
 
 
