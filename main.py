@@ -1,17 +1,16 @@
-from game.Threes import Threes
-from game.BoardFactory import BoardFactory
-from agents.UserAgent import UserAgent
+from src.Game import Game
+from src.controller.Controls import Controls;
 from agents.RandomAgent import RandomAgent
-from agents.OneStepAgent import OneStepAgent
 
 
 def start_game():
-    factory = BoardFactory()
-    board = factory.create_test_board()
+    controls = Controls()
+    agent = RandomAgent()
 
-    game = Threes(board)
-    agent = OneStepAgent()
-    game.play(agent)
+    game = Game(controls, agent)
+
+    game.play()
+
 
 
 

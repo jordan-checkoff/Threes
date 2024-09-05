@@ -13,7 +13,7 @@ class ModelTests(unittest.TestCase):
         game = Model(board, 2)
 
         self.assertListEqual(game.board.board, board)
-        self.assertEqual(game.next_card, 2)
+        self.assertEqual(game.next_tile, 2)
         self.assertListEqual(game.deck.counts, [4, 3, 4])
 
     
@@ -34,7 +34,7 @@ class ModelTests(unittest.TestCase):
         game.update(new_board, 3)
 
         self.assertListEqual(game.board.board, new_board)
-        self.assertEqual(game.next_card, 3)
+        self.assertEqual(game.next_tile, 3)
         self.assertListEqual(game.deck.counts, [4, 3, 3])
 
 
