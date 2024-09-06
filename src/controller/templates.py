@@ -4,7 +4,7 @@ import cv2
 PATH = "./src/controller/images"
 
 board_templates = {}
-tiles = [0, 1, 2, 3, 6, 12, 24, 48, 96, 192, 384]
+tiles = [0, 1, 2, 3, 6, 12, 24, 48, 96, 192, 384, 768]
 for tile in tiles:
     board_templates[tile] = cv2.imread(f'{PATH}/board_tiles/{tile}.jpg', cv2.IMREAD_GRAYSCALE)
 

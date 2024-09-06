@@ -11,7 +11,7 @@ def play():
 
     model = Model(board, next)
 
-    for i in range(20):
+    while True:
         dir = agent.choose_move(model)
         ui.change_state(dir)
 

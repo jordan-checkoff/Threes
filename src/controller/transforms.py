@@ -20,4 +20,8 @@ def next_transform(coords, n):
     c = None
     if n == 1:
         c = transform(coords, 0.22, 0.43, 0.58, 0.44, 0, 0)
+    if n == 2:
+        c = transform(coords, 0.03, 0.43, 0.4, 0.445, 0, 0)
+    if n == 3:
+        c = transform(coords, 0.02, 0.42, 0.26, 0.445, 0, 0)
     return (c[0], c[1], c[2], c[3])

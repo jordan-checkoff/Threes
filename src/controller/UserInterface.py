@@ -13,7 +13,7 @@ class UserInterface():
 
     
     def get_state(self):
-        time.sleep(1)
+        time.sleep(0.5)
         screenshot = screen.take_screenshot()
         board_coords, next_coords = screen.segment_screen(screenshot)
 
@@ -51,6 +51,10 @@ def get_board(coords, gray):
             x_start = x + (w + xg) * j
             y_start = y + (h + yg) * i
             tile = thresh[y_start:y_start+h, x_start:x_start+w]
+
+            # if i == 1 and j == 1:
+            #     cv2.imwrite("768.jpg", tile)
+            #     exit()
                          
             val = templates.match_tile(tile, templates.board_templates, w, h)
             
@@ -67,6 +71,10 @@ def get_next(coords, n, gray):
 
     if n == 1:
         return [val]
+    
+    elif val == 1:
+        exit()
+
     elif n == 2:
         return [val, val*2]
     elif n == 3:

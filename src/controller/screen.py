@@ -28,7 +28,7 @@ def swipe_board(coords, dx, dy):
     y += h // 2
     pyautogui.moveTo(x//2, y//2)
     pyautogui.click()
-    pyautogui.dragTo(x//2 + dx, y//2 + dy, 0.25, button="left")
+    pyautogui.dragTo(x//2 + dx, y//2 + dy, 0.15, button="left")
 
 
 def show_img(screenshot, coords=None):
