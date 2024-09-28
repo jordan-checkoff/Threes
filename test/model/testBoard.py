@@ -1,6 +1,6 @@
 import unittest
 from src.model.Board import Board
-from src.model.Directions import Directions
+from model.Directions import Directions
 
 
 class BoardTests(unittest.TestCase):
