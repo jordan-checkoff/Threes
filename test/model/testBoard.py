@@ -1,5 +1,5 @@
 import unittest
-from src.model.Board import Board
+from model.Board import Board
 from model.Directions import Directions
 
 
