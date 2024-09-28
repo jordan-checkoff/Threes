@@ -20,6 +20,16 @@ class Board:
             return True if val2 == 1 else False
         else:
             return True if val1 == val2 else False
+        
+    def can_shift(self):
+        for i in range(4):
+            for j in range(4):
+                if self.board[i][j] == 0:
+                    return True
+                if i < 3 and self.can_combine(self.board[i][j], self.board[i+1][j]):
+                    return True
+                if j < 3 and self.can_combine(self.board[i][j], self.board[i][j+1]):
+                    return True
 
     def shift(self, dir: Directions):
         coordinates = []

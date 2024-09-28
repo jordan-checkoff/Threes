@@ -3,6 +3,7 @@ import cv2
 import controller.transforms as transforms
 import controller.templates as templates
 import time
+from model.Directions import Directions
 
 class UserInterface():
 
@@ -27,14 +28,15 @@ class UserInterface():
     
 
     def change_state(self, dir):
-        if dir == 0:
-            screen.swipe_board(self.board_coords, 0, -100)
-        elif dir == 1:
-            screen.swipe_board(self.board_coords, 100, 0)
-        elif dir == 2:
-            screen.swipe_board(self.board_coords, 0, 100)
-        elif dir == 3:
-            screen.swipe_board(self.board_coords, -100, 0)
+        match dir:
+            case Directions.UP:
+                screen.swipe_board(self.board_coords, 0, -100)
+            case Directions.RIGHT:
+                screen.swipe_board(self.board_coords, 100, 0)
+            case Directions.DOWN:
+                screen.swipe_board(self.board_coords, 0, 100)
+            case Directions.LEFT:
+                screen.swipe_board(self.board_coords, -100, 0)
     
 
 
