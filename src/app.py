@@ -1,7 +1,7 @@
-from model.Model import Model
+from model.Board import Board
 import random
 from controller.UserInterface import UserInterface
-import agent.agent as agent
+import agent.Expectimax as Expectimax
 
   
 def play():
@@ -9,10 +9,10 @@ def play():
     ui = UserInterface()
     board, next = ui.get_state()
 
-    model = Model(board, next)
+    model = Board(board, next)
 
     while True:
-        dir = agent.choose_move(model)
+        dir = Expectimax.choose_move(model)
         ui.change_state(dir)
 
         board, next = ui.get_state()
@@ -21,4 +21,5 @@ def play():
 
 
 if __name__ == "__main__":
-    play()
+    # play()
+    print('a')

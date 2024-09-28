@@ -1,0 +1,4 @@
+numpy==1.26.0
+opencv-python==4.10.0.84
+PyAutoGUI==0.9.54
+pyclean==3.0.0

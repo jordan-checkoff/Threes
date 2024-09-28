@@ -1,4 +1,4 @@
-from model.Model import Model
+from model.Board import Board
 
 DEPTH = 4
 
@@ -10,7 +10,7 @@ options = [
     lambda x: x.shift_left(),
 ]
 
-def choose_move(model: Model):
+def choose_move(model: Board):
 
         max_score = -1
         final_choice = None
@@ -64,7 +64,7 @@ def get_move1_score(model, f, l):
     return score
 
 
-def get_move2_score(model: Model, f, l):
+def get_move2_score(model: Board, f, l):
     coordinates = f(model)
 
     if not coordinates:
