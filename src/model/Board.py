@@ -10,6 +10,16 @@ class Board:
 
     def get_tile(self, i, j):
         return self.board[i][j]
+    
+
+    def num_cards(self):
+        count = 0
+        for i in range(4):
+            for j in range(4):
+                if self.board[i][j] != 0:
+                    count += 1
+
+        return count
 
 
     def can_combine(self, val1, val2):

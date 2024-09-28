@@ -52,8 +52,8 @@ def get_board(coords, gray):
             y_start = y + (h + yg) * i
             tile = thresh[y_start:y_start+h, x_start:x_start+w]
 
-            # if i == 1 and j == 1:
-            #     cv2.imwrite("768.jpg", tile)
+            # if i == 2 and j == 2:
+            #     cv2.imwrite("1536.jpg", tile)
             #     exit()
                          
             val = templates.match_tile(tile, templates.board_templates, w, h)
@@ -67,6 +67,8 @@ def get_next(coords, n, gray):
     x, y, w, h = transforms.next_transform(coords, n)
 
     tile = gray[y:y+h, x:x+w]
+    # cv2.imwrite("48.jpg", tile)
+    # exit()
     val = templates.match_tile(tile, templates.next_templates, w, h)
 
     if n == 1:
