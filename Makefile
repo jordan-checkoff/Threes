@@ -1,14 +1,16 @@
-.PHONY: run, clean, test
+.PHONY: run, clean, test, setup
 
-run: venv/bin/activate
+run: setup
 	./venv/bin/python3 src/app.py
 
-test: venv/bin/activate
+test: setup
 	PYTHONPATH="src" ./venv/bin/python3 -m unittest discover -s ./test/model
 
 clean:
 	pyclean .
 	rm -rf venv
+
+setup: venv/bin/activate
 
 venv/bin/activate: requirements.txt
 	python3 -m venv venv
