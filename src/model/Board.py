@@ -1,4 +1,6 @@
 from model.Directions import Directions
+from model.helpers import can_combine
+
 
 class Board:
 
@@ -10,25 +12,15 @@ class Board:
 
     def get_tile(self, i, j):
         return self.board[i][j]
-
-    def can_combine(self, val1, val2):
-        if val1 == 0:
-            return True if val2 != 0 else False
-        elif val1 == 1:
-            return True if val2 == 2 else False
-        elif val1 == 2:
-            return True if val2 == 1 else False
-        else:
-            return True if val1 == val2 else False
         
     def can_shift(self):
         for i in range(4):
             for j in range(4):
                 if self.board[i][j] == 0:
                     return True
-                if i < 3 and self.can_combine(self.board[i][j], self.board[i+1][j]):
+                if i < 3 and can_combine(self.board[i][j], self.board[i+1][j]):
                     return True
-                if j < 3 and self.can_combine(self.board[i][j], self.board[i][j+1]):
+                if j < 3 and can_combine(self.board[i][j], self.board[i][j+1]):
                     return True
 
     def shift(self, dir: Directions):
@@ -51,7 +43,7 @@ class Board:
         for i in range(4):
             combined = False
             for j in range(3):
-                if self.can_combine(self.board[i][j], self.board[i][j+1]):
+                if can_combine(self.board[i][j], self.board[i][j+1]):
                     combined = True
                     self.board[i][j] += self.board[i][j+1]
                     self.board[i][j+1] = 0
@@ -62,7 +54,7 @@ class Board:
         for i in range(4):
             combined = False
             for j in range(3, 0, -1):
-                if self.can_combine(self.board[i][j], self.board[i][j-1]):
+                if can_combine(self.board[i][j], self.board[i][j-1]):
                     combined = True
                     self.board[i][j] += self.board[i][j-1]
                     self.board[i][j-1] = 0
@@ -73,7 +65,7 @@ class Board:
         for j in range(4):
             combined = False
             for i in range(3):
-                if self.can_combine(self.board[i][j], self.board[i+1][j]):
+                if can_combine(self.board[i][j], self.board[i+1][j]):
                     combined = True
                     self.board[i][j] += self.board[i+1][j]
                     self.board[i+1][j] = 0
@@ -84,13 +76,12 @@ class Board:
         for j in range(4):
             combined = False
             for i in range(3, 0, -1):
-                if self.can_combine(self.board[i][j], self.board[i-1][j]):
+                if can_combine(self.board[i][j], self.board[i-1][j]):
                     combined = True
                     self.board[i][j] += self.board[i-1][j]
                     self.board[i-1][j] = 0
             if combined:
                 coordinates.append((0, j))
-    
 
     def copy(self):
         return Board(self.board)

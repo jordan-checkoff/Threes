@@ -22,9 +22,7 @@ class UserInterface():
         board = get_board(board_coords, gray)
         next = get_next(next_coords[0], next_coords[1], gray)
 
-        print(board, next)
-
-        return (board, next)
+        return {"board": board, "next_tile": next}
     
 
     def change_state(self, dir):

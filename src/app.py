@@ -1,5 +1,4 @@
 from model.Board import Board
-import random
 from controller.UserInterface import UserInterface
 from agent.Agent import expectimax
 
@@ -9,9 +8,8 @@ def play():
     ui = UserInterface()
 
     while True:
-        board, next = ui.get_state()
-        model = Board(board)
-        dir = expectimax(model, next)
+        state = ui.get_state()
+        dir = expectimax(Board(state["board"]), state["next_tile"])
         ui.change_state(dir)
         
 

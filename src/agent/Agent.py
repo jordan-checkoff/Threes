@@ -1,6 +1,7 @@
 from model.Board import Board
 from model.Directions import Directions
 from agent.Move import Move
+from agent.helpers import num_blank_spaces, num_combinable_pairs, to_tuple, highest_tile_number;
 
 DEPTH = 4
 
@@ -42,24 +43,11 @@ def evaluate_board(board: Board):
     if not board.can_shift():
         return 0
     count = 1
-    for i in range(4):
-        for j in range(4):
-            count += 1 if board.get_tile(i, j) == 0 else 0
+    count += 3 * num_blank_spaces(board)
+    count += num_combinable_pairs(board)
     return count
 
 
 
 # The score of the move is an average of the scores of the resulting boards
 # The score of a board is the max move that can be done on that board
-
-
-
-# Every empty space is worth 3 points.
-# Every matching pair of adjacent cards is worth 2 points.
-# A card next to another card twice its value is worth 2 points.
-# A card trapped between two other cards of higher value, or between a wall and a card of higher value, is penalized 5 points.
-# Cards of the second-largest size get a bonus of 1 point if they’re next to the largest card, and an extra point if they’re next to a wall.
-# Cards of the third-largest size get a bonus of 1 point if they’re next to a wall and are next to a card of the second-largest size.
-# The largest card gets a +3 bonus if it’s next to one wall, or a +6 bonus if it’s in a corner.
-
-# https://nbickford.wordpress.com/2014/04/18/how-to-beat-threes-and-2048/
